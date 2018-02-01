@@ -1,0 +1,33 @@
+;; every link breed must be declared as either directed or undirected
+directed-link-breed [red-links red-link]
+undirected-link-breed [blue-links blue-link]
+
+blue-links-own [ weight ]  ;; link breeds can own variables just like turtle breeds
+
+to setup
+  clear-all
+  create-ordered-turtles 10 [
+    fd 5
+    set color gray
+  ]
+  ask n-of 5 turtles [
+    ;; create-<breed>-with is used to make undirected links
+    create-blue-link-with one-of other turtles [
+      set color blue
+      set weight random 10
+      set label weight
+    ]
+  ]
+  ;; different breeds can have different default shapes
+  set-default-shape red-links "curved link"
+  ask n-of 5 turtles [
+    ;; create-<breed>-to/from are used to make directed links
+    create-red-link-to one-of other turtles [
+      set color red
+    ]
+  ]
+  reset-ticks
+end
+
+
+; Public Domain:
