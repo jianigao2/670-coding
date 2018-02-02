@@ -1,0 +1,44 @@
+turtles-own [
+  message?  ;; true or false: has this turtle gotten the message yet?
+]
+
+to setup
+  clear-all
+  create-turtles 500 [
+    set message? false
+    setxy random-xcor random-ycor
+    set size 2
+  ]
+  ask one-of turtles [
+    set message? true  ;; give the message to one of the turtles
+  ]
+  ask turtles [
+    recolor  ;; color the turtles according to whether they have the message
+    create-links-with n-of links-per-node other turtles
+  ]
+  reset-ticks
+end
+
+to go
+  if all? turtles [ message? ] [ stop ]
+  ask turtles [ communicate ]
+  ask turtles [ recolor ]
+  tick
+end
+
+;; the core procedure!
+to communicate  ;; turtle procedure
+  if any? link-neighbors with [ message? ]
+    [ set message? true ]
+end
+
+;; color turtles with message red, and those without message blue
+to recolor  ;; turtle procedure
+  ifelse message?
+    [ set color red ]
+    [ set color blue ]
+end
+
+
+; Copyright 2004 Uri Wilensky.
+; See Info tab for full copyright and license.
